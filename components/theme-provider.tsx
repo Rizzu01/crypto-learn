@@ -1,3 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-export default function ThemeProvider({children}:{children:React.ReactNode}){const [dark,setDark]=useState(false);useEffect(()=>{const saved=localStorage.getItem('crypto-theme');const value=saved?saved==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;setDark(value);document.documentElement.dataset.theme=value?'dark':'light'},[]);const toggle=()=>{setDark(v=>{const n=!v;document.documentElement.dataset.theme=n?'dark':'light';localStorage.setItem('crypto-theme',n?'dark':'light');return n})};return <>{children}<button className="theme-toggle" onClick={toggle} aria-label="Toggle light and dark mode">{dark?'☀':'◐'}</button></>}
+import { useEffect } from "react";
+export default function ThemeProvider({children}:{children:React.ReactNode}){
+  useEffect(()=>{
+    const saved=localStorage.getItem("crypto-theme");
+    const dark=saved?saved==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.theme=dark?"dark":"light";
+  },[]);
+  return <>{children}</>;
+}
