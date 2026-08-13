@@ -1,3 +1,40 @@
+"use client";
+import { useMemo, useState } from "react";
 import Header from "../../components/header";
-const terms=[['AMM','Automated Market Maker'],['APY','Annual Percentage Yield'],['FDV','Fully Diluted Valuation'],['Gas','Network fee paid for computation'],['Liquidity','How easily an asset can be traded'],['MEV','Maximal Extractable Value'],['TVL','Total Value Locked'],['Whale','A wallet or entity holding a large amount of an asset'],['Slippage','Difference between expected and executed trade price'],['Funding rate','Periodic payment between perpetual futures positions'],['Impermanent loss','Potential relative loss for liquidity providers'],['Market cap','Token price multiplied by circulating supply']];
-export default function Glossary(){return <main><Header/><section className="simple-page shell"><span className="kicker">GLOSSARY</span><h1>Crypto, decoded.</h1><p>Clear definitions for the words you'll see across the industry.</p><div className="glossary-list">{terms.map(([a,b])=><div key={a}><strong>{a}</strong><span>{b}</span></div>)}</div></section></main>}
+import { Search, ArrowRight } from "lucide-react";
+const terms=[
+["AMM","DeFi","Automated Market Maker","A smart-contract mechanism that prices trades using liquidity pools and mathematical rules instead of a traditional order book."],
+["APY","Yield","Annual Percentage Yield","A return measure that includes the effect of compounding. It should not be confused with a guaranteed return."],
+["FDV","Tokenomics","Fully Diluted Valuation","An estimate of token value if the broader fully diluted supply were priced at the current market price."],
+["Gas","Blockchain","Network fee resource","Gas measures computational work on networks such as Ethereum. Users pay fees to have transactions processed and included."],
+["Liquidity","Markets","Market depth","Liquidity describes how much buying or selling can occur without moving the market price substantially."],
+["MEV","Advanced","Maximal Extractable Value","Value that can be captured through transaction ordering, inclusion or exclusion during block production."],
+["TVL","DeFi","Total Value Locked","A metric estimating the value of assets deposited in a DeFi protocol or ecosystem. It is not the same as revenue."],
+["Whale","Markets","Large holder","A wallet or entity holding a large amount of an asset. Whale activity can matter when liquidity is thin."],
+["Slippage","Markets","Execution difference","The difference between the expected price and the average price actually achieved by a trade."],
+["Funding rate","Derivatives","Perpetual funding","A periodic transfer between long and short perpetual positions designed to keep the contract close to its underlying reference."],
+["Impermanent loss","DeFi","LP relative loss","The potential underperformance of a liquidity-provider position compared with simply holding the same assets when their relative price changes."],
+["Market cap","Tokenomics","Market capitalization","Token price multiplied by circulating supply. It is a valuation metric, not the amount of cash invested."],
+["Circulating supply","Tokenomics","Available supply","An estimate of tokens currently available to the public market, excluding restricted allocations under the chosen methodology."],
+["Vesting","Tokenomics","Release schedule","A schedule that controls when allocated tokens become available to recipients, often using cliffs and linear releases."],
+["Perpetual","Derivatives","No-expiry futures","A derivative designed to track an underlying asset without a fixed expiry, usually using funding to anchor its price."],
+["Liquidation","Derivatives","Forced position closure","The forced reduction or closure of a leveraged position when its margin falls below required risk thresholds."],
+["Mark price","Derivatives","Fair-risk reference","A price used by many derivatives venues to calculate P&L and liquidation using a methodology intended to reduce manipulation from one trade."],
+["Oracle","DeFi","External data feed","A system that supplies smart contracts with external information such as asset prices. Oracle failures can become protocol failures."],
+["Rollup","Scaling","Layer 2 batching","A Layer 2 system that executes many transactions and settles or proves their results using an underlying blockchain."],
+["Bridge","Infrastructure","Cross-chain connection","A system that transfers assets or messages between blockchain environments. Its verification mechanism defines much of its security."],
+["Staking","Blockchain","Economic security","Committing assets to support proof-of-stake consensus or a protocol's defined reward mechanism."],
+["Smart contract","Blockchain","On-chain program","Program code deployed to a blockchain that executes according to deterministic rules and can control assets or state."],
+["Stablecoin","Assets","Reference-value token","A crypto asset designed to maintain a relatively stable value against a reference such as the US dollar."],
+["DEX","DeFi","Decentralized exchange","A trading application where smart contracts execute swaps without requiring users to deposit assets into a traditional exchange account."],
+["AMM curve","DeFi","Pricing function","The mathematical relationship used by an AMM to determine how the pool price changes as reserves are traded."],
+["Initial margin","Derivatives","Opening collateral","The collateral required to establish a leveraged position under a venue's risk rules."],
+["Maintenance margin","Derivatives","Minimum collateral","The minimum collateral level required to keep a leveraged position open. Falling below it can trigger liquidation."],
+["Nonce","Blockchain","Transaction sequence","A sequence value used by account-based chains to order transactions from an address and prevent unintended replay."],
+["Hash","Security","Cryptographic fingerprint","A deterministic fixed-length output used to identify data and support integrity checks without revealing the original input."],
+["Private key","Security","Signing secret","The secret cryptographic value that authorizes transactions. Anyone who obtains it may be able to control the associated assets."],
+["Seed phrase","Security","Wallet backup","A human-readable backup that can derive wallet keys. It should be stored offline and never shared."],
+["Token burn","Tokenomics","Supply removal","A mechanism that permanently removes tokens from usable supply. Burning alone does not create demand."],
+["Protocol revenue","DeFi","Value retained by protocol","Fees or other value captured by a protocol. Analysts should distinguish gross fees from the portion actually retained."],
+];
+export default function Glossary(){const [query,setQuery]=useState("");const [category,setCategory]=useState("All");const cats=["All",...Array.from(new Set(terms.map(t=>t[1])))];const filtered=useMemo(()=>terms.filter(t=>(category==="All"||t[1]===category)&&(`${t[0]} ${t[2]} ${t[3]}`.toLowerCase().includes(query.toLowerCase()))),[query,category]);return <main><Header/><section className="simple-page shell"><div className="glossary-hero"><div><span className="kicker">GLOSSARY / 034+ TERMS</span><h1>Crypto, decoded.</h1><p>Search the vocabulary behind markets, blockchains, DeFi, tokenomics and derivatives. Each definition tells you what the term means and why it matters.</p></div><div className="glossary-stat"><strong>{filtered.length}</strong><span>terms shown</span></div></div><div className="glossary-controls"><label><Search size={16}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search a term..."/></label><div className="glossary-filters">{cats.map(c=><button key={c} className={category===c?"active":""} onClick={()=>setCategory(c)}>{c}</button>)}</div></div><div className="glossary-list">{filtered.map(([term,cat,full,desc])=><article key={term}><div className="glossary-card-top"><span>{cat}</span><b>{term}</b></div><div><h2>{full}</h2><p>{desc}</p></div><ArrowRight size={17}/></article>)}</div>{filtered.length===0&&<div className="empty-state">No terms match your search. Try another word or category.</div>}</section></main>}
