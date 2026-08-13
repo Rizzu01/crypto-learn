@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { ArrowRight, Moon, Sun } from "lucide-react";
+export default function Header(){return <header className="site-header"><Link href="/" className="brand"><span className="brand-mark">C</span><span>CryptoLearn</span></Link><nav><Link href="/learn/crypto-101">Learn</Link><Link href="/topics">Explore</Link><Link href="/tools">Tools</Link><Link href="/glossary">Glossary</Link></nav><div className="header-actions"><Link className="search-btn" href="/topics">Explore topics</Link><Link className="start-btn" href="/learn/crypto-101">Start learning <ArrowRight size={15}/></Link></div></header>}
